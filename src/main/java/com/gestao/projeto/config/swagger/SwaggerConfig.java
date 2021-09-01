@@ -5,10 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import com.google.common.collect.Lists;
+
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.ApiKey;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -26,6 +29,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                 .apis(RequestHandlerSelectors.basePackage("com.gestao.projeto.controller"))
                 .paths(PathSelectors.any())
                 .build()
+                .securitySchemes(Lists.newArrayList(apiKey()))
                 .apiInfo(metaData());
     }
 
@@ -48,5 +52,9 @@ public class SwaggerConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/webjars/**")
                 .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+    
+    private ApiKey apiKey() {
+	    return new ApiKey("apiKey", "Authorization", "header");
+	}	
 
 }
