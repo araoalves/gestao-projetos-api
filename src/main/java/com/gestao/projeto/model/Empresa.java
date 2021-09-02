@@ -19,7 +19,7 @@ public class Empresa {
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty(notes = "Geração do ID de clientes")
+	@ApiModelProperty(notes = "Geração do ID de empresa")
     private long id;
 	
 	@Column(name = "descricao", length=150)
