@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -47,11 +48,12 @@ public class FuncionarioController {
 	}
 	
 	
-	@RequestMapping(value = "/apagar", method = RequestMethod.POST)
+	@RequestMapping(value = "/apagar/{id}", method = RequestMethod.DELETE)
 	@ApiOperation(value = "apagar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<Funcionario> apagar(@RequestBody Funcionario funcionario) throws BusinessException {
+	public ResponseEntity<HttpStatus> apagar(@PathVariable("id") Long id) throws BusinessException {
 		try {
-			return new ResponseEntity<>(funcionarioBO.apagar(funcionario), HttpStatus.CREATED);
+			funcionarioBO.apagar(id);
+			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

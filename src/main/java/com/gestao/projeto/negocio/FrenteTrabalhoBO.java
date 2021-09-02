@@ -23,18 +23,9 @@ public class FrenteTrabalhoBO {
 		return frenteTrabalhoRepository.save(frenteTrabalho);
 	}
 	
-	public FrenteTrabalho apagar(FrenteTrabalho frenteTrabalho) {
+	public void apagar(Long id) {
 		
-		Optional<FrenteTrabalho> emp = frenteTrabalhoRepository.findById(frenteTrabalho.getId());
-		
-		if (emp.isEmpty()) {
-			FrenteTrabalho	emp1 = new FrenteTrabalho();
-			return emp1;
-		}else {
-			frenteTrabalhoRepository.delete(frenteTrabalho);
-			return emp.get();
-		}
-		
+		frenteTrabalhoRepository.deleteById(id);
 	}
 
 }

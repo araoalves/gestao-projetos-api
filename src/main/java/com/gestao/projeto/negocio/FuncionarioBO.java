@@ -23,18 +23,9 @@ public class FuncionarioBO {
 		return funcionarioRepository.save(funcionario);
 	}
 	
-	public Funcionario apagar(Funcionario funcionario) {
+	public void apagar(Long id) {
 		
-		Optional<Funcionario> emp = funcionarioRepository.findById(funcionario.getId());
-		
-		if (emp.isEmpty()) {
-			Funcionario	emp1 = new Funcionario();
-			return emp1;
-		}else {
-			funcionarioRepository.delete(funcionario);
-			return emp.get();
-		}
-		
+		funcionarioRepository.deleteById(id);
 	}
 
 }

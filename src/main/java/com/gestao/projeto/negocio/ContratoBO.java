@@ -23,17 +23,9 @@ public class ContratoBO {
 		return contratoRepository.save(contrato);
 	}
 	
-	public Contrato apagar(Contrato contrato) {
+	public void apagar(Long id) {
 		
-		Optional<Contrato> emp = contratoRepository.findById(contrato.getId());
-		
-		if (emp.isEmpty()) {
-			Contrato	emp1 = new Contrato();
-			return emp1;
-		}else {
-			contratoRepository.delete(contrato);
-			return emp.get();
-		}
+		contratoRepository.deleteById(id);
 		
 	}
 
