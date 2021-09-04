@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.gestao.projeto.Projection.FrenteTrabalhoGeralProjection;
+import com.gestao.projeto.Projection.FrenteTrabalhoResumoProjection;
 import com.gestao.projeto.exception.BusinessException;
-import com.gestao.projeto.model.Empresa;
 import com.gestao.projeto.model.FrenteTrabalho;
 import com.gestao.projeto.negocio.FrenteTrabalhoBO;
 
@@ -53,6 +54,40 @@ public class FrenteTrabalhoController {
 		try {
 			frentetrabalhoBO.apagar(id);
 			return new ResponseEntity<>(HttpStatus.OK);
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/empresa/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "empresa", authorizations = { @Authorization(value="apiKey") })
+	public ResponseEntity<List<FrenteTrabalho>> listarPorContrato(@PathVariable("id") Long id) throws BusinessException {		
+		try {
+			return new ResponseEntity<>(frentetrabalhoBO.listarPorEmpresa(id), HttpStatus.OK);
+			
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(value = "/relatoriogeral/{emp}/{cont}", method = RequestMethod.GET)
+	@ApiOperation(value = "relatoriogeral", authorizations = { @Authorization(value="apiKey") })
+	public ResponseEntity<List<FrenteTrabalhoGeralProjection>> relatorioGeral(@PathVariable("emp")Long emp,@PathVariable("cont") Long cont) throws BusinessException {		
+		try {	
+			return new ResponseEntity<>(frentetrabalhoBO.gerarGeral(emp,cont), HttpStatus.OK);
+					
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}
+	}
+	
+	
+	@RequestMapping(value = "/relatorioresumo/{emp}", method = RequestMethod.GET)
+	@ApiOperation(value = "relatorioresumo", authorizations = { @Authorization(value="apiKey") })
+	public ResponseEntity<List<FrenteTrabalhoResumoProjection>> relatorioResumo(@PathVariable("emp")Long emp) throws BusinessException {		
+		try {	
+			return new ResponseEntity<>(frentetrabalhoBO.gerarResumo(emp), HttpStatus.OK);
+					
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
