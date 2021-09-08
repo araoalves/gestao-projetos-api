@@ -1,9 +1,8 @@
 package com.gestao.projeto.negocio;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.gestao.projeto.model.Empresa;
@@ -15,8 +14,8 @@ public class EmpresaBO {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 	
-	public List<Empresa> listar() {
-		return empresaRepository.findAll();
+	public Page<Empresa> listar(Pageable pageble) {
+		return empresaRepository.findAll(pageble);
 	}
 	
 	public Empresa salvar(Empresa empresa) {

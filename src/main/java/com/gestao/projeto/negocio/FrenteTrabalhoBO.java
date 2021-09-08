@@ -3,6 +3,8 @@ package com.gestao.projeto.negocio;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.gestao.projeto.Projection.FrenteTrabalhoGeralProjection;
@@ -16,8 +18,8 @@ public class FrenteTrabalhoBO {
 	@Autowired
 	private FrenteTrabalhoRepository frenteTrabalhoRepository;
 	
-	public List<FrenteTrabalho> listar() {
-		return frenteTrabalhoRepository.findAll();
+	public Page<FrenteTrabalho> listar(Pageable pageble) {
+		return frenteTrabalhoRepository.findAll(pageble);
 	}
 	
 	public FrenteTrabalho salvar(FrenteTrabalho frenteTrabalho) {
@@ -29,17 +31,17 @@ public class FrenteTrabalhoBO {
 		frenteTrabalhoRepository.deleteById(id);
 	}
 	
-	public List<FrenteTrabalho> listarPorEmpresa(Long id) {
-		return frenteTrabalhoRepository.buscaFreteTrabalhoEmpresa(id);
+	public Page<FrenteTrabalho> listarPorEmpresa(Long id,Pageable pageble) {
+		return frenteTrabalhoRepository.buscaFreteTrabalhoEmpresa(id, pageble);
 	}
 	
-	public List<FrenteTrabalhoGeralProjection> gerarGeral(Long emp,Long cont){
+	public FrenteTrabalhoGeralProjection gerarGeral(Long emp,Long cont){
 		
 		return frenteTrabalhoRepository.buscaRelatorioGeral(emp,cont);
 	
 	}
 	
-public List<FrenteTrabalhoResumoProjection> gerarResumo(Long emp){
+public FrenteTrabalhoResumoProjection gerarResumo(Long emp){
 		
 		return frenteTrabalhoRepository.buscaRelatorioResumo(emp);
 	

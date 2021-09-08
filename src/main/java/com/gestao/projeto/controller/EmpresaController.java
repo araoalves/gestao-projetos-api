@@ -1,8 +1,8 @@
 package com.gestao.projeto.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,9 +27,9 @@ public class EmpresaController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<Empresa>> listar() throws BusinessException {		
+	public ResponseEntity<Page<Empresa>> listar(Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(empresaBO.listar(), HttpStatus.OK);
+			return new ResponseEntity<>(empresaBO.listar(pageble), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

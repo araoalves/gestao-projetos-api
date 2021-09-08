@@ -1,8 +1,8 @@
 package com.gestao.projeto.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestao.projeto.exception.BusinessException;
 import com.gestao.projeto.model.Contrato;
-import com.gestao.projeto.model.Empresa;
 import com.gestao.projeto.negocio.ContratoBO;
 
 import io.swagger.annotations.ApiOperation;
@@ -28,9 +27,9 @@ public class ContratoController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<Contrato>> listar() throws BusinessException {		
+	public ResponseEntity<Page<Contrato>> listar(Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(contratoBO.listar(), HttpStatus.OK);
+			return new ResponseEntity<>(contratoBO.listar(pageble), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

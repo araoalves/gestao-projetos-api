@@ -1,8 +1,8 @@
 package com.gestao.projeto.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,9 +29,9 @@ public class FrenteTrabalhoController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<FrenteTrabalho>> listar() throws BusinessException {		
+	public ResponseEntity<Page<FrenteTrabalho>> listar(Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(frentetrabalhoBO.listar(), HttpStatus.OK);
+			return new ResponseEntity<>(frentetrabalhoBO.listar(pageble), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -61,9 +61,9 @@ public class FrenteTrabalhoController {
 	
 	@RequestMapping(value = "/empresa/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "empresa", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<FrenteTrabalho>> listarPorContrato(@PathVariable("id") Long id) throws BusinessException {		
+	public ResponseEntity<Page<FrenteTrabalho>> listarPorContrato(@PathVariable("id") Long id, Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(frentetrabalhoBO.listarPorEmpresa(id), HttpStatus.OK);
+			return new ResponseEntity<>(frentetrabalhoBO.listarPorEmpresa(id,pageble), HttpStatus.OK);
 			
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
@@ -72,7 +72,7 @@ public class FrenteTrabalhoController {
 	
 	@RequestMapping(value = "/relatoriogeral/{emp}/{cont}", method = RequestMethod.GET)
 	@ApiOperation(value = "relatoriogeral", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<FrenteTrabalhoGeralProjection>> relatorioGeral(@PathVariable("emp")Long emp,@PathVariable("cont") Long cont) throws BusinessException {		
+	public ResponseEntity<FrenteTrabalhoGeralProjection> relatorioGeral(@PathVariable("emp")Long emp,@PathVariable("cont") Long cont) throws BusinessException {		
 		try {	
 			return new ResponseEntity<>(frentetrabalhoBO.gerarGeral(emp,cont), HttpStatus.OK);
 					
@@ -84,7 +84,7 @@ public class FrenteTrabalhoController {
 	
 	@RequestMapping(value = "/relatorioresumo/{emp}", method = RequestMethod.GET)
 	@ApiOperation(value = "relatorioresumo", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<List<FrenteTrabalhoResumoProjection>> relatorioResumo(@PathVariable("emp")Long emp) throws BusinessException {		
+	public ResponseEntity<FrenteTrabalhoResumoProjection> relatorioResumo(@PathVariable("emp")Long emp) throws BusinessException {		
 		try {	
 			return new ResponseEntity<>(frentetrabalhoBO.gerarResumo(emp), HttpStatus.OK);
 					

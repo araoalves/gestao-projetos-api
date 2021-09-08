@@ -1,9 +1,8 @@
 package com.gestao.projeto.negocio;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.gestao.projeto.model.Contrato;
@@ -15,8 +14,8 @@ public class ContratoBO {
 	@Autowired
 	private ContratoRepository contratoRepository;
 	
-	public List<Contrato> listar(){
-		return contratoRepository.findAll();
+	public Page<Contrato> listar(Pageable pageble){
+		return contratoRepository.findAll(pageble);
 	}
 	
 	public Contrato salvar(Contrato contrato) {
