@@ -1,17 +1,18 @@
 package com.gestao.projeto.repository;
 
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.gestao.projeto.Projection.FrenteTrabalhoGeralProjection;
 import com.gestao.projeto.Projection.FrenteTrabalhoResumoProjection;
+import com.gestao.projeto.filter.FrentetrabalhoFilter;
 import com.gestao.projeto.model.FrenteTrabalho;
 
-public interface FrenteTrabalhoRepository extends JpaRepository<FrenteTrabalho, Long>{
+public interface FrenteTrabalhoRepository extends PagingAndSortingRepository<FrenteTrabalho, Long> , JpaSpecificationExecutor<FrenteTrabalho>	{
 	
 	@Query(value = "SELECT * from frente_trabalho t where t.empresa = ?1", nativeQuery = true)
 	Page<FrenteTrabalho> buscaFreteTrabalhoEmpresa (Long id, Pageable pageble);
@@ -41,5 +42,8 @@ public interface FrenteTrabalhoRepository extends JpaRepository<FrenteTrabalho, 
 			+ "WHERE t.empresa = ? "
 			+ "group by c.quantidade", nativeQuery = true)
 	FrenteTrabalhoResumoProjection buscaRelatorioResumo (Long emp);
+	
+	
+
 	
 }
