@@ -19,8 +19,9 @@ import lombok.Data;
 public class FrentetrabalhoFilter  {
 	
 	private Long funcionarioId;
-	private Date dataInicio;
-	private Date dadaFim;
+	private Date dataInicioData;
+	private Date dadaFimData;
+	private String dataFiltro;
 	
 	
 	
@@ -30,26 +31,30 @@ public class FrentetrabalhoFilter  {
 			List<Predicate> predicados = new ArrayList<>();
 			
 			if(funcionarioId != null) {
-				Path<Long> campoId = root.<Long>get("Funcionario").get("id");
+				Path<Long> campoId = root.<Long>get("funcionario").get("id");
 				Predicate predicadoId = builder.equal(campoId, funcionarioId);
 				predicados.add(predicadoId);
 			}
 			
-			if(dataInicio != null) {
-				Path<Long> campoId = root.<Date>get("FrenteTrabalho").get("dataInicio");
-				Predicate predicadoId = builder.equal(campoId, dataInicio);
-				predicados.add(predicadoId);
-			}
-			
-			if(dadaFim != null) {
-				Path<Long> campoId = root.<Date>get("FrenteTrabalho").get("dataFim");
-				Predicate predicadoId = builder.equal(campoId, dadaFim);
-				predicados.add(predicadoId);
-			}
-			
-						
-			predicados.add(builder.in(root.get("status")).value("A").value("P").value("Q"));	
-
+			if(dataFiltro.equals("I")) {
+				
+				if(dataInicioData != null || dadaFimData != null) {
+					Path<Date> campoId1 = root.<Date>get("dataInicio");
+					Predicate predicadoId = builder.between(campoId1,dataInicioData,dadaFimData);
+					predicados.add(predicadoId);
+				}
+				
+			}else if (dataFiltro.equals("F")) {
+				
+				if(dataInicioData != null || dadaFimData != null) {
+					Path<Date> campoId = root.<Date>get("dadaFim");
+					Predicate predicadoId = builder.between(campoId,dataInicioData,dadaFimData);
+					predicados.add(predicadoId);
+				}
+				
+			} 
+				
+	
 			return builder.and(predicados.toArray(new Predicate[0]));
 		};
 	}

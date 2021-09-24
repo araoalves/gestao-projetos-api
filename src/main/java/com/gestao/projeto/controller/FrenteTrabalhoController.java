@@ -30,9 +30,11 @@ public class FrenteTrabalhoController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<Page<FrenteTrabalho>> listar(FrentetrabalhoFilter filtro,Pageable pageble) throws BusinessException {		
+	public ResponseEntity<Page<FrenteTrabalho>> listar(FrentetrabalhoFilter filtro,Pageable pageble) throws BusinessException {	
+	
 		try {
 			return new ResponseEntity<>(frentetrabalhoBO.listar(filtro,pageble), HttpStatus.OK);
+			
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
