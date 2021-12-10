@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.gestao.projeto.Projection.FrenteTrabalhoGeralProjection;
 import com.gestao.projeto.Projection.FrenteTrabalhoResumoProjection;
 import com.gestao.projeto.exception.BusinessException;
 import com.gestao.projeto.filter.FrentetrabalhoFilter;
@@ -73,11 +72,11 @@ public class FrenteTrabalhoController {
 		}
 	}
 	
-	@RequestMapping(value = "/relatoriogeral/{emp}/{cont}", method = RequestMethod.GET)
+	@RequestMapping(value = "/relatoriogeral/{emp}/{cont}/{status}", method = RequestMethod.GET)
 	@ApiOperation(value = "relatoriogeral", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<FrenteTrabalhoGeralProjection> relatorioGeral(@PathVariable("emp")Long emp,@PathVariable("cont") Long cont) throws BusinessException {		
+	public ResponseEntity<?> relatorioGeral(@PathVariable("emp")Long emp, @PathVariable("cont") Long cont, @PathVariable("status") String status) throws BusinessException {		
 		try {	
-			return new ResponseEntity<>(frentetrabalhoBO.gerarGeral(emp,cont), HttpStatus.OK);
+			return new ResponseEntity<>(frentetrabalhoBO.gerarGeral(emp,cont, status), HttpStatus.OK);
 					
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());

@@ -36,24 +36,25 @@ public class FrentetrabalhoFilter  {
 				predicados.add(predicadoId);
 			}
 			
-			if(dataFiltro.equals("I")) {
-				
-				if(dataInicioData != null || dadaFimData != null) {
-					Path<Date> campoId1 = root.<Date>get("dataInicio");
-					Predicate predicadoId = builder.between(campoId1,dataInicioData,dadaFimData);
-					predicados.add(predicadoId);
-				}
-				
-			}else if (dataFiltro.equals("F")) {
-				
-				if(dataInicioData != null || dadaFimData != null) {
-					Path<Date> campoId = root.<Date>get("dadaFim");
-					Predicate predicadoId = builder.between(campoId,dataInicioData,dadaFimData);
-					predicados.add(predicadoId);
-				}
-				
-			} 
-				
+			if(dataFiltro != null) {
+				if(dataFiltro.equals("I")) {
+					
+					if(dataInicioData != null || dadaFimData != null) {
+						Path<Date> campoId1 = root.<Date>get("dataInicio");
+						Predicate predicadoId = builder.between(campoId1,dataInicioData,dadaFimData);
+						predicados.add(predicadoId);
+					}
+					
+				}else if (dataFiltro.equals("F")) {
+					
+					if(dataInicioData != null || dadaFimData != null) {
+						Path<Date> campoId = root.<Date>get("dadaFim");
+						Predicate predicadoId = builder.between(campoId,dataInicioData,dadaFimData);
+						predicados.add(predicadoId);
+					}
+					
+				} 
+			}
 	
 			return builder.and(predicados.toArray(new Predicate[0]));
 		};

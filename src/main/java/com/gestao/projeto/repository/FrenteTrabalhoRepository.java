@@ -1,15 +1,15 @@
 package com.gestao.projeto.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.gestao.projeto.Projection.FrenteTrabalhoGeralProjection;
 import com.gestao.projeto.Projection.FrenteTrabalhoResumoProjection;
-import com.gestao.projeto.filter.FrentetrabalhoFilter;
 import com.gestao.projeto.model.FrenteTrabalho;
 
 public interface FrenteTrabalhoRepository extends PagingAndSortingRepository<FrenteTrabalho, Long> , JpaSpecificationExecutor<FrenteTrabalho>	{
@@ -26,9 +26,9 @@ public interface FrenteTrabalhoRepository extends PagingAndSortingRepository<Fre
 			+ "INNER JOIN contrato c on c.id = t.contrato "
 			+ "WHERE t.empresa = ? "
 			+ "AND t.contrato = ? "
-			+ "AND t.status = 'C' "
+			+ "AND t.status = ? "
 			+ "group by f.nome", nativeQuery = true)
-	FrenteTrabalhoGeralProjection buscaRelatorioGeral (Long emp, Long cont);
+	List<FrenteTrabalhoGeralProjection> buscaRelatorioGeral (Long emp, Long cont, String status);
 	
 	
 	
