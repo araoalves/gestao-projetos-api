@@ -1,5 +1,7 @@
 package com.gestao.projeto.negocio;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +27,14 @@ public class EmpresaBO {
 	public void apagar(Long id) {
 		
 		empresaRepository.deleteById(id);
+	}
+
+	public Optional<Empresa> findById(long id) {
+		return empresaRepository.findById(id);
+	}
+
+	public Empresa update(Empresa _empresa) {
+		return empresaRepository.save(_empresa);
 	}
 
 }

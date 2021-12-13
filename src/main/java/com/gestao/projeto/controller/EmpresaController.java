@@ -1,11 +1,14 @@
 package com.gestao.projeto.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,8 +61,25 @@ public class EmpresaController {
 		}
 	}
 	
-	
-	
+	@ApiOperation(value = "Editar Empresa", authorizations = { @Authorization(value="apiKey") })
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<Empresa> editarMinhaConta(@PathVariable("id") long id, @RequestBody Empresa empresa) throws BusinessException {				
+		try {
+			
+			Optional<Empresa> empresaAtual = empresaBO.findById(id);
+
+			if (empresaAtual.isPresent()) {
+				Empresa _empresa = empresaAtual.get();
+				_empresa.setDescricao(empresa.getDescricao());
+				_empresa.setCnpj(empresa.getCnpj());
+				return new ResponseEntity<>(empresaBO.update(_empresa), HttpStatus.OK);
+			} else {
+				throw new BusinessException("Empresa não encontrada.");
+			}
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}		
+	}
 	
 	
 }
