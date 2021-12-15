@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestao.projeto.exception.BusinessException;
+import com.gestao.projeto.filter.ContratoFilter;
 import com.gestao.projeto.model.Contrato;
 import com.gestao.projeto.negocio.ContratoBO;
 
@@ -30,9 +31,9 @@ public class ContratoController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<Page<Contrato>> listar(Pageable pageble) throws BusinessException {		
+	public ResponseEntity<Page<Contrato>> listar(ContratoFilter filter, Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(contratoBO.listar(pageble), HttpStatus.OK);
+			return new ResponseEntity<>(contratoBO.listar(filter, pageble), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

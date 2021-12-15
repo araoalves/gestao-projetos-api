@@ -1,11 +1,14 @@
 package com.gestao.projeto.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -93,6 +96,31 @@ public class FrenteTrabalhoController {
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
+	}
+	
+	@ApiOperation(value = "Editar dados da Frente de Trabalho", authorizations = { @Authorization(value="apiKey") })
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<FrenteTrabalho> editar(@PathVariable("id") long id, @RequestBody FrenteTrabalho frenteTrabalho) throws BusinessException {				
+		try {
+			
+			Optional<FrenteTrabalho> frenteTrabalhoAtual = frentetrabalhoBO.findById(id);
+
+			if (frenteTrabalhoAtual.isPresent()) {
+				FrenteTrabalho _frenteTrabalho = frenteTrabalhoAtual.get();
+				_frenteTrabalho.setDataInicio(frenteTrabalho.getDataInicio());
+				_frenteTrabalho.setDataFim(frenteTrabalho.getDataFim());
+				_frenteTrabalho.setDescricaoAtividade(frenteTrabalho.getDescricaoAtividade());
+				_frenteTrabalho.setQuantidadeHoras(frenteTrabalho.getQuantidadeHoras());
+				_frenteTrabalho.setFuncionario(frenteTrabalho.getFuncionario());
+				_frenteTrabalho.setContrato(frenteTrabalho.getContrato());
+				_frenteTrabalho.setEmpresa(frenteTrabalho.getEmpresa());
+				return new ResponseEntity<>(frentetrabalhoBO.salvar(_frenteTrabalho), HttpStatus.OK);
+			} else {
+				throw new BusinessException("Atividade não encontrada.");
+			}
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}		
 	}
 
 }

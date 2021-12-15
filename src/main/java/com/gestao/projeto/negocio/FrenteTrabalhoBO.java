@@ -1,6 +1,8 @@
 package com.gestao.projeto.negocio;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,42 +17,41 @@ import com.gestao.projeto.model.FrenteTrabalho;
 import com.gestao.projeto.repository.FrenteTrabalhoRepository;
 
 @Component
-public class FrenteTrabalhoBO  {
-	
+public class FrenteTrabalhoBO {
+
 	@Autowired
 	private FrenteTrabalhoRepository frenteTrabalhoRepository;
-	
-	
-	
-	public Page<FrenteTrabalho> listar(FrentetrabalhoFilter filtro,Pageable pageble) {
-	
-		return frenteTrabalhoRepository.findAll( filtro.toSpec(),pageble);
-		
+
+	public Page<FrenteTrabalho> listar(FrentetrabalhoFilter filtro, Pageable pageble) {
+		return frenteTrabalhoRepository.findAll(filtro.toSpec(), pageble);
 	}
-	
+
 	public FrenteTrabalho salvar(FrenteTrabalho frenteTrabalho) {
+		Calendar calendar = Calendar.getInstance();
+		frenteTrabalho.setData(calendar.getTime());
 		frenteTrabalho.setStatus(FrenteDeTrabalhoStatus.ABERTO);
 		return frenteTrabalhoRepository.save(frenteTrabalho);
 	}
-	
+
 	public void apagar(Long id) {
-		
 		frenteTrabalhoRepository.deleteById(id);
 	}
-	
-	public Page<FrenteTrabalho> listarPorEmpresa(Long id,Pageable pageble) {
+
+	public Page<FrenteTrabalho> listarPorEmpresa(Long id, Pageable pageble) {
 		return frenteTrabalhoRepository.buscaFreteTrabalhoEmpresa(id, pageble);
 	}
-	
-	public List<FrenteTrabalhoGeralProjection> gerarGeral(Long emp,Long cont, String status){		
-		return frenteTrabalhoRepository.buscaRelatorioGeral(emp,cont, status);
-	
+
+	public List<FrenteTrabalhoGeralProjection> gerarGeral(Long emp, Long cont, String status) {
+		return frenteTrabalhoRepository.buscaRelatorioGeral(emp, cont, status);
+
 	}
-	
-public FrenteTrabalhoResumoProjection gerarResumo(Long emp){
-		
+
+	public FrenteTrabalhoResumoProjection gerarResumo(Long emp) {
 		return frenteTrabalhoRepository.buscaRelatorioResumo(emp);
-	
+	}
+
+	public Optional<FrenteTrabalho> findById(long id) {
+		return frenteTrabalhoRepository.findById(id);
 	}
 
 }
