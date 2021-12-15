@@ -4,6 +4,8 @@ import java.util.Set;
 
 import javax.validation.constraints.*;
 
+import com.gestao.projeto.model.Empresa;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,5 +38,8 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+    
+    @NotBlank
+    private Empresa empresa;
  
 }

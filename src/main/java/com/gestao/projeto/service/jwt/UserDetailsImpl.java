@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gestao.projeto.model.Empresa;
 import com.gestao.projeto.model.User;
 
 public class UserDetailsImpl implements UserDetails {
@@ -23,16 +24,19 @@ public class UserDetailsImpl implements UserDetails {
 
 	@JsonIgnore
 	private String password;
+	
+	private Empresa empresa;
 
 	private Collection<? extends GrantedAuthority> authorities;
 
 	public UserDetailsImpl(Long id, String username, String email, String password,
-			Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities, Empresa empresa) {
 		this.id = id;
 		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.authorities = authorities;
+		this.empresa = empresa;
 	}
 
 	public static UserDetailsImpl build(User user) {
@@ -45,7 +49,8 @@ public class UserDetailsImpl implements UserDetails {
 				user.getUsername(), 
 				user.getEmail(),
 				user.getPassword(), 
-				authorities);
+				authorities,
+				user.getEmpresa());
 	}
 
 	@Override
@@ -74,6 +79,14 @@ public class UserDetailsImpl implements UserDetails {
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 
 	@Override

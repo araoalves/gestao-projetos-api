@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
+import com.gestao.projeto.filter.EmpresaFilter;
 import com.gestao.projeto.model.Empresa;
 import com.gestao.projeto.repository.EmpresaRepository;
 
@@ -16,8 +17,8 @@ public class EmpresaBO {
 	@Autowired
 	private EmpresaRepository empresaRepository;
 	
-	public Page<Empresa> listar(Pageable pageble) {
-		return empresaRepository.findAll(pageble);
+	public Page<Empresa> listar(EmpresaFilter filter, Pageable pageble) {
+		return empresaRepository.findAll(filter.toSpec(),pageble);
 	}
 	
 	public Empresa salvar(Empresa empresa) {
@@ -31,10 +32,6 @@ public class EmpresaBO {
 
 	public Optional<Empresa> findById(long id) {
 		return empresaRepository.findById(id);
-	}
-
-	public Empresa update(Empresa _empresa) {
-		return empresaRepository.save(_empresa);
 	}
 
 }

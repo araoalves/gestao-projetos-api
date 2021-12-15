@@ -1,6 +1,6 @@
 package com.gestao.projeto.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +10,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -29,7 +33,7 @@ public class Contrato {
 	private String descricao;
 	
 	@Column(name = "quantidade", length=11)
-	private int quantidade;
+	private Double quantidade;
 	
 	@Column(name = "valor_hora", length=15)
 	private Double valorHora;
@@ -38,11 +42,12 @@ public class Contrato {
 	@JoinColumn(name="empresa")
 	private Empresa empresa;
 	
-	@Column(name = "data")
+	@Temporal(TemporalType.DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", locale = "pt_BR", timezone = "America/Sao_Paulo")
 	private Date data;
 	
 	@Column(name = "teto_mensal", length=5)
-	private int tetoMensal;
+	private Double tetoMensal;
 	 
 	
 }

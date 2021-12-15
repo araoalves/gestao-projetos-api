@@ -86,6 +86,7 @@ public class JwtUserDetailsService {
 				}
 
 				user.setRoles(roles);
+				user.setEmpresa(signUpRequest.getEmpresa());
 				return userRepository.save(user);
 	}
 

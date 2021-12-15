@@ -56,7 +56,8 @@ public class AuthenticationController {
 												 userDetails.getId(), 
 												 userDetails.getUsername(), 
 												 userDetails.getEmail(), 
-												 roles));
+												 roles,
+												 userDetails.getEmpresa()));
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

@@ -19,11 +19,10 @@ import lombok.Data;
 public class FrentetrabalhoFilter  {
 	
 	private Long funcionarioId;
+	private Long empresaId;
 	private Date dataInicioData;
 	private Date dadaFimData;
 	private String dataFiltro;
-	
-	
 	
 	public Specification<FrenteTrabalho> toSpec() {
 		return (root, query, builder) -> {
@@ -34,6 +33,12 @@ public class FrentetrabalhoFilter  {
 				Path<Long> campoId = root.<Long>get("funcionario").get("id");
 				Predicate predicadoId = builder.equal(campoId, funcionarioId);
 				predicados.add(predicadoId);
+			}
+			
+			if(empresaId != null) {
+				Path<Long> campoEmpresaId = root.<Long>get("empresa").get("id");
+				Predicate predicadoEmpresaId = builder.equal(campoEmpresaId, empresaId);
+				predicados.add(predicadoEmpresaId);
 			}
 			
 			if(dataFiltro != null) {
@@ -59,6 +64,5 @@ public class FrentetrabalhoFilter  {
 			return builder.and(predicados.toArray(new Predicate[0]));
 		};
 	}
-
 
 }

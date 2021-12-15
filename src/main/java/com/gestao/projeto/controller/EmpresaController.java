@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.gestao.projeto.exception.BusinessException;
+import com.gestao.projeto.filter.EmpresaFilter;
 import com.gestao.projeto.model.Empresa;
 import com.gestao.projeto.negocio.EmpresaBO;
 
@@ -30,9 +31,9 @@ public class EmpresaController {
 
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	@ApiOperation(value = "Listar", authorizations = { @Authorization(value="apiKey") })
-	public ResponseEntity<Page<Empresa>> listar(Pageable pageble) throws BusinessException {		
+	public ResponseEntity<Page<Empresa>> listar(EmpresaFilter filter, Pageable pageble) throws BusinessException {		
 		try {
-			return new ResponseEntity<>(empresaBO.listar(pageble), HttpStatus.OK);
+			return new ResponseEntity<>(empresaBO.listar(filter, pageble), HttpStatus.OK);
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
@@ -63,7 +64,7 @@ public class EmpresaController {
 	
 	@ApiOperation(value = "Editar Empresa", authorizations = { @Authorization(value="apiKey") })
 	@PutMapping("/editar/{id}")
-	public ResponseEntity<Empresa> editarMinhaConta(@PathVariable("id") long id, @RequestBody Empresa empresa) throws BusinessException {				
+	public ResponseEntity<Empresa> editar(@PathVariable("id") long id, @RequestBody Empresa empresa) throws BusinessException {				
 		try {
 			
 			Optional<Empresa> empresaAtual = empresaBO.findById(id);
@@ -72,7 +73,7 @@ public class EmpresaController {
 				Empresa _empresa = empresaAtual.get();
 				_empresa.setDescricao(empresa.getDescricao());
 				_empresa.setCnpj(empresa.getCnpj());
-				return new ResponseEntity<>(empresaBO.update(_empresa), HttpStatus.OK);
+				return new ResponseEntity<>(empresaBO.salvar(_empresa), HttpStatus.OK);
 			} else {
 				throw new BusinessException("Empresa não encontrada.");
 			}

@@ -1,5 +1,7 @@
 package com.gestao.projeto.config.api;
 
+import java.util.TimeZone;
+
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -8,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import com.gestao.projeto.model.ERole;
 import com.gestao.projeto.model.Role;
 import com.gestao.projeto.repository.RoleRepository;
-import com.gestao.projeto.service.jwt.JwtUserDetailsService;
 
 @Configuration
 public class ApiConfiguration {
@@ -25,5 +26,9 @@ public class ApiConfiguration {
 	      };
 	 }
 	
+	@Bean
+	public void timeZone() {
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Sao_Paulo"));
+	}
 	
 }

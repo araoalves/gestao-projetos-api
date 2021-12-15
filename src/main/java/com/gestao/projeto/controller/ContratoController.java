@@ -1,11 +1,14 @@
 package com.gestao.projeto.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -56,6 +59,29 @@ public class ContratoController {
 		} catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}
+	}
+	
+	@ApiOperation(value = "Editar Contrato", authorizations = { @Authorization(value="apiKey") })
+	@PutMapping("/editar/{id}")
+	public ResponseEntity<Contrato> editar(@PathVariable("id") long id, @RequestBody Contrato contrato) throws BusinessException {				
+		try {
+			
+			Optional<Contrato> contratoAtual = contratoBO.findById(id);
+
+			if (contratoAtual.isPresent()) {
+				Contrato _contrato = contratoAtual.get();
+				_contrato.setDescricao(contrato.getDescricao());
+				_contrato.setData(contrato.getData());
+				_contrato.setQuantidade(contrato.getQuantidade());
+				_contrato.setTetoMensal(contrato.getTetoMensal());
+				_contrato.setValorHora(contrato.getValorHora());
+				return new ResponseEntity<>(contratoBO.salvar(_contrato), HttpStatus.OK);
+			} else {
+				throw new BusinessException("Empresa não encontrada.");
+			}
+		} catch (Exception e) {
+			throw new BusinessException(e.getMessage());
+		}		
 	}
 
 }
